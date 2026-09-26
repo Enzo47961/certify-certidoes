@@ -1,6 +1,6 @@
--- CERTA · certidões em dia.
+-- CERTIFY · certidões em dia.
 -- Schema próprio, fora da API REST do Supabase: tudo passa pelas funções
--- public.certa_*, que exigem o segredo do servidor (CERTA_SEGREDO).
+-- public.certify_*, que exigem o segredo do servidor (CERTIFY_SEGREDO).
 create extension if not exists pgcrypto;
 create table if not exists public.segredos (nome text primary key, valor text not null);
 alter table public.segredos enable row level security;

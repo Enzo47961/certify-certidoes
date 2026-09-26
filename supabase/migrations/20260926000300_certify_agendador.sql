@@ -3,7 +3,7 @@
 -- Troque <APP_URL> e <CRON_SECRET> pelos valores reais antes de aplicar.
 create extension if not exists pg_net;
 select cron.schedule(
-  'certa-agendador',
+  'certify-agendador',
   '2 * * * *',
   $$ select net.http_get(
        url := '<APP_URL>/api/agendador',

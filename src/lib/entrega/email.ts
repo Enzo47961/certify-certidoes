@@ -15,7 +15,7 @@ export async function enviarEmail(para: string, assunto: string, html: string, a
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from: process.env.EMAIL_REMETENTE ?? 'CERTA <onboarding@resend.dev>', to: [para], subject: assunto, html, attachments: anexos }),
+      body: JSON.stringify({ from: process.env.EMAIL_REMETENTE ?? 'CERTIFY <onboarding@resend.dev>', to: [para], subject: assunto, html, attachments: anexos }),
       signal: AbortSignal.timeout(30_000),
     });
     const j = (await r.json().catch(() => ({}))) as { message?: string };
@@ -30,10 +30,10 @@ const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 
 function moldura(titulo: string, miolo: string, link: string) {
   return `<div style="font-family:Segoe UI,Arial,sans-serif;max-width:680px;margin:auto;color:#111827">
-  <p style="font-size:13px;color:#6b7280;margin:0 0 4px">CERTA · certidões em dia</p>
+  <p style="font-size:13px;color:#6b7280;margin:0 0 4px">CERTIFY · certidões em dia</p>
   <h1 style="font-size:20px;margin:0 0 16px">${esc(titulo)}</h1>${miolo}
   <p style="margin:24px 0 0"><a href="${link}" style="background:#0f3d3e;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;font-size:14px">Abrir o painel</a></p>
-  <p style="font-size:12px;color:#9ca3af;margin-top:24px">Você recebe este e-mail porque configurou envios no CERTA. Para parar, desligue em Configurações.</p></div>`;
+  <p style="font-size:12px;color:#9ca3af;margin-top:24px">Você recebe este e-mail porque configurou envios no CERTIFY. Para parar, desligue em Configurações.</p></div>`;
 }
 
 /** Resumo semanal: situação de cada empresa + PDFs vigentes anexados. */
@@ -65,7 +65,7 @@ export function emailSemanal(espaco: Espaco, empresas: EmpresaComCertidoes[], vi
     if (total > 25 * 1024 * 1024) break;
     anexos.push({ filename: `${c.empresa.slice(0, 40)} - ${INFO[c.tipo as TipoCertidao]?.nome ?? c.tipo} - ${dataBr(c.valida_ate).replace(/\//g, '-')}.pdf`, content: c.arquivo });
   }
-  return { assunto: `CERTA · certidões da semana (${empresas.length} empresas)`, html, anexos };
+  return { assunto: `CERTIFY · certidões da semana (${empresas.length} empresas)`, html, anexos };
 }
 
 export type ItemAlerta = { id: string; tipo: string; valida_ate: string | null; empresa: string; cnpj: string; marco: number };
@@ -81,7 +81,7 @@ export function emailAlerta(espaco: Espaco, itens: ItemAlerta[], link: string) {
     .join('');
   const vencidas = itens.filter((i) => i.marco === 0).length;
   return {
-    assunto: vencidas > 0 ? `⚠ ${vencidas} certidão(ões) vencida(s) · CERTA` : `${itens.length} certidão(ões) perto de vencer · CERTA`,
+    assunto: vencidas > 0 ? `⚠ ${vencidas} certidão(ões) vencida(s) · CERTIFY` : `${itens.length} certidão(ões) perto de vencer · CERTIFY`,
     html: moldura('Certidões que precisam de renovação', `<ul style="padding-left:18px">${linhas}</ul>`, link),
   };
 }

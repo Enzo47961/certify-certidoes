@@ -1,7 +1,7 @@
--- Funções de acesso do CERTA. Todas exigem o segredo do servidor.
+-- Funções de acesso do CERTIFY. Todas exigem o segredo do servidor.
 
 -- Espaço por token (admin) ou token de leitura. Devolve 'leitura' = true no segundo caso.
-create or replace function public.certa_espaco(p_segredo text, p_token text)
+create or replace function public.certify_espaco(p_segredo text, p_token text)
 returns jsonb language plpgsql stable security definer set search_path = '' as $$
 declare e certidoes.espacos;
 begin
@@ -15,7 +15,7 @@ begin
   return null;
 end $$;
 
-create or replace function public.certa_espaco_demo(p_segredo text)
+create or replace function public.certify_espaco_demo(p_segredo text)
 returns jsonb language plpgsql security definer set search_path = '' as $$
 declare e certidoes.espacos;
 begin
@@ -27,7 +27,7 @@ begin
   return to_jsonb(e) || jsonb_build_object('leitura', false);
 end $$;
 
-create or replace function public.certa_criar_espaco(p_segredo text, p_nome text)
+create or replace function public.certify_criar_espaco(p_segredo text, p_nome text)
 returns jsonb language plpgsql security definer set search_path = '' as $$
 declare e certidoes.espacos;
 begin
@@ -37,7 +37,7 @@ begin
 end $$;
 
 -- Empresas do espaço com a certidão vigente (mais recente) de cada tipo.
-create or replace function public.certa_empresas(p_segredo text, p_espaco uuid)
+create or replace function public.certify_empresas(p_segredo text, p_espaco uuid)
 returns jsonb language plpgsql stable security definer set search_path = '' as $$
 begin
   if not certidoes.autorizado(p_segredo) then raise exception 'NAO_AUTORIZADO'; end if;
@@ -49,7 +49,7 @@ begin
   ), '[]'::jsonb);
 end $$;
 
-create or replace function public.certa_adicionar_empresa(p_segredo text, p_espaco uuid, p_empresa jsonb, p_max int)
+create or replace function public.certify_adicionar_empresa(p_segredo text, p_espaco uuid, p_empresa jsonb, p_max int)
 returns jsonb language plpgsql security definer set search_path = '' as $$
 declare emp certidoes.empresas; total int;
 begin
@@ -64,7 +64,7 @@ begin
   return to_jsonb(emp);
 end $$;
 
-create or replace function public.certa_remover_empresa(p_segredo text, p_espaco uuid, p_empresa uuid)
+create or replace function public.certify_remover_empresa(p_segredo text, p_espaco uuid, p_empresa uuid)
 returns void language plpgsql security definer set search_path = '' as $$
 begin
   if not certidoes.autorizado(p_segredo) then raise exception 'NAO_AUTORIZADO'; end if;
@@ -72,7 +72,7 @@ begin
 end $$;
 
 -- Grava uma certidão (PDF em base64). Confere que a empresa é do espaço.
-create or replace function public.certa_salvar_certidao(p_segredo text, p_espaco uuid, p_certidao jsonb)
+create or replace function public.certify_salvar_certidao(p_segredo text, p_espaco uuid, p_certidao jsonb)
 returns jsonb language plpgsql security definer set search_path = '' as $$
 declare novo uuid;
 begin
@@ -89,7 +89,7 @@ begin
   return (select to_jsonb(l) from certidoes.lista l where l.id = novo);
 end $$;
 
-create or replace function public.certa_arquivo(p_segredo text, p_espaco uuid, p_certidao uuid)
+create or replace function public.certify_arquivo(p_segredo text, p_espaco uuid, p_certidao uuid)
 returns jsonb language plpgsql stable security definer set search_path = '' as $$
 begin
   if not certidoes.autorizado(p_segredo) then raise exception 'NAO_AUTORIZADO'; end if;
@@ -98,7 +98,7 @@ begin
           where c.id = p_certidao and e.espaco_id = p_espaco and c.arquivo is not null);
 end $$;
 
-create or replace function public.certa_historico(p_segredo text, p_espaco uuid, p_empresa uuid)
+create or replace function public.certify_historico(p_segredo text, p_espaco uuid, p_empresa uuid)
 returns jsonb language plpgsql stable security definer set search_path = '' as $$
 begin
   if not certidoes.autorizado(p_segredo) then raise exception 'NAO_AUTORIZADO'; end if;
@@ -108,7 +108,7 @@ begin
 end $$;
 
 -- Certidões vigentes com o PDF (pasta ZIP, e-mail, página de download).
-create or replace function public.certa_vigentes_com_arquivo(p_segredo text, p_espaco uuid)
+create or replace function public.certify_vigentes_com_arquivo(p_segredo text, p_espaco uuid)
 returns jsonb language plpgsql stable security definer set search_path = '' as $$
 begin
   if not certidoes.autorizado(p_segredo) then raise exception 'NAO_AUTORIZADO'; end if;
@@ -122,7 +122,7 @@ begin
   ), '[]'::jsonb);
 end $$;
 
-create or replace function public.certa_configurar(p_segredo text, p_espaco uuid, p_config jsonb)
+create or replace function public.certify_configurar(p_segredo text, p_espaco uuid, p_config jsonb)
 returns jsonb language plpgsql security definer set search_path = '' as $$
 declare e certidoes.espacos;
 begin
@@ -141,7 +141,7 @@ begin
   return to_jsonb(e);
 end $$;
 
-create or replace function public.certa_evento(p_segredo text, p_espaco uuid, p_tipo text, p_status text, p_detalhe text)
+create or replace function public.certify_evento(p_segredo text, p_espaco uuid, p_tipo text, p_status text, p_detalhe text)
 returns void language plpgsql security definer set search_path = '' as $$
 begin
   if not certidoes.autorizado(p_segredo) then raise exception 'NAO_AUTORIZADO'; end if;
@@ -150,7 +150,7 @@ begin
     (select id from certidoes.eventos where espaco_id = p_espaco order by criado_em desc limit 60);
 end $$;
 
-create or replace function public.certa_eventos(p_segredo text, p_espaco uuid)
+create or replace function public.certify_eventos(p_segredo text, p_espaco uuid)
 returns jsonb language plpgsql stable security definer set search_path = '' as $$
 begin
   if not certidoes.autorizado(p_segredo) then raise exception 'NAO_AUTORIZADO'; end if;
@@ -159,7 +159,7 @@ begin
 end $$;
 
 -- Espaços com rotina de e-mail ou alerta ligados (o agendador decide o que enviar).
-create or replace function public.certa_espacos_agendados(p_segredo text)
+create or replace function public.certify_espacos_agendados(p_segredo text)
 returns jsonb language plpgsql stable security definer set search_path = '' as $$
 begin
   if not certidoes.autorizado(p_segredo) then raise exception 'NAO_AUTORIZADO'; end if;
@@ -168,7 +168,7 @@ begin
 end $$;
 
 -- Certidões vigentes que cruzaram um marco de aviso (N dias, 7, 1, vencida) ainda não avisado.
-create or replace function public.certa_alertas_pendentes(p_segredo text, p_espaco uuid, p_dias int)
+create or replace function public.certify_alertas_pendentes(p_segredo text, p_espaco uuid, p_dias int)
 returns jsonb language plpgsql stable security definer set search_path = '' as $$
 begin
   if not certidoes.autorizado(p_segredo) then raise exception 'NAO_AUTORIZADO'; end if;
@@ -186,7 +186,7 @@ begin
   ), '[]'::jsonb);
 end $$;
 
-create or replace function public.certa_marcar_alertas(p_segredo text, p_itens jsonb)
+create or replace function public.certify_marcar_alertas(p_segredo text, p_itens jsonb)
 returns void language plpgsql security definer set search_path = '' as $$
 begin
   if not certidoes.autorizado(p_segredo) then raise exception 'NAO_AUTORIZADO'; end if;
@@ -196,12 +196,12 @@ begin
 end $$;
 
 -- Janela deslizante de uso (demo pública): true = pode.
-create or replace function public.certa_consumir(p_segredo text, p_chave text, p_acao text, p_limite int, p_janela_horas int)
+create or replace function public.certify_consumir(p_segredo text, p_chave text, p_acao text, p_limite int, p_janela_horas int)
 returns boolean language plpgsql security definer set search_path = '' as $$
 declare n int;
 begin
   if not certidoes.autorizado(p_segredo) then raise exception 'NAO_AUTORIZADO'; end if;
-  perform pg_advisory_xact_lock(hashtext('certa:' || p_chave || p_acao));
+  perform pg_advisory_xact_lock(hashtext('certify:' || p_chave || p_acao));
   select count(*) into n from certidoes.usos
     where chave = p_chave and acao = p_acao and criado_em > now() - make_interval(hours => p_janela_horas);
   if n >= p_limite then return false; end if;
@@ -211,7 +211,7 @@ begin
 end $$;
 
 -- Recomeça a demonstração: apaga empresas e histórico do espaço demo (o app recria).
-create or replace function public.certa_limpar_demo(p_segredo text)
+create or replace function public.certify_limpar_demo(p_segredo text)
 returns uuid language plpgsql security definer set search_path = '' as $$
 declare e uuid;
 begin
@@ -227,12 +227,12 @@ do $$
 declare f text;
 begin
   foreach f in array array[
-    'certa_espaco(text,text)', 'certa_espaco_demo(text)', 'certa_criar_espaco(text,text)', 'certa_empresas(text,uuid)',
-    'certa_adicionar_empresa(text,uuid,jsonb,int)', 'certa_remover_empresa(text,uuid,uuid)', 'certa_salvar_certidao(text,uuid,jsonb)',
-    'certa_arquivo(text,uuid,uuid)', 'certa_historico(text,uuid,uuid)', 'certa_vigentes_com_arquivo(text,uuid)',
-    'certa_configurar(text,uuid,jsonb)', 'certa_evento(text,uuid,text,text,text)', 'certa_eventos(text,uuid)',
-    'certa_espacos_agendados(text)', 'certa_alertas_pendentes(text,uuid,int)', 'certa_marcar_alertas(text,jsonb)',
-    'certa_consumir(text,text,text,int,int)', 'certa_limpar_demo(text)'
+    'certify_espaco(text,text)', 'certify_espaco_demo(text)', 'certify_criar_espaco(text,text)', 'certify_empresas(text,uuid)',
+    'certify_adicionar_empresa(text,uuid,jsonb,int)', 'certify_remover_empresa(text,uuid,uuid)', 'certify_salvar_certidao(text,uuid,jsonb)',
+    'certify_arquivo(text,uuid,uuid)', 'certify_historico(text,uuid,uuid)', 'certify_vigentes_com_arquivo(text,uuid)',
+    'certify_configurar(text,uuid,jsonb)', 'certify_evento(text,uuid,text,text,text)', 'certify_eventos(text,uuid)',
+    'certify_espacos_agendados(text)', 'certify_alertas_pendentes(text,uuid,int)', 'certify_marcar_alertas(text,jsonb)',
+    'certify_consumir(text,text,text,int,int)', 'certify_limpar_demo(text)'
   ] loop
     execute format('revoke all on function public.%s from public', f);
     execute format('grant execute on function public.%s to anon', f);

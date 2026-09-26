@@ -1,12 +1,12 @@
-# CERTA · certidões em dia
+# CERTIFY · certidões em dia
 
 ![Next.js](https://img.shields.io/badge/Next.js_15-000?logo=nextdotjs) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff) ![Tailwind](https://img.shields.io/badge/Tailwind_v4-06B6D4?logo=tailwindcss&logoColor=fff) ![Supabase](https://img.shields.io/badge/Supabase-Postgres_%2B_pg__cron-3ECF8E?logo=supabase&logoColor=fff) ![Resend](https://img.shields.io/badge/e--mail-Resend-000)
 
-**🔗 Demo ao vivo: [certa-certidoes.vercel.app](https://certa-certidoes.vercel.app)** · painel de exemplo em [/demo](https://certa-certidoes.vercel.app/demo) · ou crie o seu painel na página inicial (sem cadastro).
+**🔗 Demo ao vivo: [certify-certidoes.vercel.app](https://certify-certidoes.vercel.app)** · painel de exemplo em [/demo](https://certify-certidoes.vercel.app/demo) · ou crie o seu painel na página inicial (sem cadastro).
 
-![Painel do CERTA](docs/painel.png)
+![Painel do CERTIFY](docs/painel.png)
 
-Informe o CNPJ e acompanhe, num painel só, as certidões fiscais e jurídicas que licitações, bancos e clientes pedem: **Federal (Receita/PGFN), FGTS, Trabalhista (TST), Estadual, Municipal, Falência (TJ) e a consulta consolidada do TCU**. O CERTA avisa antes de vencer e entrega os PDFs por e-mail, pasta ZIP, link de consulta ou integração com o sistema interno.
+Informe o CNPJ e acompanhe, num painel só, as certidões fiscais e jurídicas que licitações, bancos e clientes pedem: **Federal (Receita/PGFN), FGTS, Trabalhista (TST), Estadual, Municipal, Falência (TJ) e a consulta consolidada do TCU**. O CERTIFY avisa antes de vencer e entrega os PDFs por e-mail, pasta ZIP, link de consulta ou integração com o sistema interno.
 
 | Certidão aberta no painel | Entregas e alertas |
 | --- | --- |
@@ -27,16 +27,16 @@ Informe o CNPJ e acompanhe, num painel só, as certidões fiscais e jurídicas q
 | **E-mail semanal** | No dia e hora escolhidos (ex.: toda segunda às 8h): situação de cada empresa e os PDFs vigentes anexados |
 | **Pasta** | ZIP com uma pasta por empresa, arquivos nomeados pela validade e um `resumo.csv` que abre no Excel |
 | **Link de consulta** | Um segundo link, só de leitura e download, para o contador, o cliente ou o setor de licitações |
-| **Integração** | Webhook `POST` a cada certidão nova, com os dados e o PDF, assinado com HMAC-SHA256 (`X-Certa-Assinatura`) para o sistema jurídico, ERP ou GED |
+| **Integração** | Webhook `POST` a cada certidão nova, com os dados e o PDF, assinado com HMAC-SHA256 (`X-Certify-Assinatura`) para o sistema jurídico, ERP ou GED |
 
 ## Emissão: o que é automático e por quê
 
-Nenhuma dessas certidões exige login ou certificado digital — só o CNPJ. Mas Receita, Caixa, TST, SEFAZ e prefeituras põem **CAPTCHA** antes de emitir. O CERTA **não tenta burlar** essa proteção. Em vez disso:
+Nenhuma dessas certidões exige login ou certificado digital — só o CNPJ. Mas Receita, Caixa, TST, SEFAZ e prefeituras põem **CAPTCHA** antes de emitir. O CERTIFY **não tenta burlar** essa proteção. Em vez disso:
 
 | Rota | Quando | Como |
 | --- | --- | --- |
-| **TCU (automática)** | Consulta consolidada: inidôneos (TCU), improbidade (CNJ), CEIS e CNEP | Serviço público aberto, devolve o PDF oficial. O TCU tem firewall: o CERTA limita o próprio ritmo (teto global por hora, reaproveita a mesma certidão por 24 h) e, se for bloqueado, cai para a emissão assistida em vez de insistir |
-| **Assistida** | Órgãos com CAPTCHA | Abre o site oficial certo (com o CNPJ copiado); a pessoa envia o PDF e o CERTA lê tudo |
+| **TCU (automática)** | Consulta consolidada: inidôneos (TCU), improbidade (CNJ), CEIS e CNEP | Serviço público aberto, devolve o PDF oficial. O TCU tem firewall: o CERTIFY limita o próprio ritmo (teto global por hora, reaproveita a mesma certidão por 24 h) e, se for bloqueado, cai para a emissão assistida em vez de insistir |
+| **Assistida** | Órgãos com CAPTCHA | Abre o site oficial certo (com o CNPJ copiado); a pessoa envia o PDF e o CERTIFY lê tudo |
 | **Infosimples (automática, opcional)** | Com `INFOSIMPLES_TOKEN` | Conector de um provedor autorizado emite Federal, FGTS, Trabalhista e Estadual. O PDF devolvido passa pela mesma leitura das certidões enviadas à mão |
 | **Demonstração** | Painel `/demo` | Certidões de **exemplo**, com marca d'água “sem valor legal”, para empresas fictícias. A demo não aceita empresas reais |
 
@@ -58,7 +58,7 @@ Navegador ──► Next.js 15 (App Router, Route Handlers)
 ```
 
 - **Sem login, com link secreto**: cada painel tem um token de 144 bits (administração) e outro de leitura. As rotas conferem que cada empresa e certidão pertencem ao painel do link.
-- **Banco fechado**: tabelas no schema `certidoes`, fora da API REST. O acesso é só por funções `public.certa_*` que exigem `CERTA_SEGREDO`. PDFs guardados no próprio banco (`bytea`).
+- **Banco fechado**: tabelas no schema `certidoes`, fora da API REST. O acesso é só por funções `public.certify_*` que exigem `CERTIFY_SEGREDO`. PDFs guardados no próprio banco (`bytea`).
 - **Limites persistentes** (a Vercel pode atender cada requisição em outra instância): criação de painéis por IP, consultas de CNPJ, emissões por painel e teto global de chamadas ao TCU — tudo com hash de IP, nunca o IP.
 - **Agendamento de hora em hora sem plano pago**: o cron da Vercel gratuita é diário; o `pg_cron` do Supabase chama a rota via `pg_net`.
 - **Webhook seguro**: só `https`, bloqueia endereços internos (localhost, redes privadas), sem seguir redirecionamentos, 10 s de limite.

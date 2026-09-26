@@ -1,7 +1,7 @@
 import 'server-only';
 
 /**
- * Acesso ao Supabase só pelas funções `public.certa_*`, que exigem o segredo do
+ * Acesso ao Supabase só pelas funções `public.certify_*`, que exigem o segredo do
  * servidor. As tabelas ficam no schema `certidoes`, fora da API REST.
  */
 export async function rpc<T>(funcao: string, parametros: Record<string, unknown> = {}, timeoutMs = 15_000): Promise<T> {
@@ -13,7 +13,7 @@ export async function rpc<T>(funcao: string, parametros: Record<string, unknown>
       Authorization: `Bearer ${process.env.SUPABASE_ANON_KEY}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ p_segredo: process.env.CERTA_SEGREDO, ...parametros }),
+    body: JSON.stringify({ p_segredo: process.env.CERTIFY_SEGREDO, ...parametros }),
     signal: AbortSignal.timeout(timeoutMs),
     cache: 'no-store',
   });

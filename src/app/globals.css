@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-/* CERTA — verde-petróleo de carimbo, papel e tinta. */
+/* CERTIFY — verde-petróleo de carimbo, papel e tinta. */
 @theme {
   --font-sans: var(--fonte-texto), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-display: var(--fonte-titulo), var(--fonte-texto), ui-sans-serif, system-ui, sans-serif;

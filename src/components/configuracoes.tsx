@@ -136,11 +136,11 @@ export function Configuracoes({ token, espaco, emailServidor }: { token: string;
         <Retorno r={retorno.pasta} />
       </Secao>
 
-      <Secao icone={<IconeLink />} titulo="Integração com sistema interno" descricao="A cada certidão nova, o CERTA envia um POST com os dados e o PDF para o seu sistema jurídico, ERP ou GED.">
+      <Secao icone={<IconeLink />} titulo="Integração com sistema interno" descricao="A cada certidão nova, o CERTIFY envia um POST com os dados e o PDF para o seu sistema jurídico, ERP ou GED.">
         <Campo rotulo="Endereço (https) que recebe as certidões">
           <input disabled={bloqueado} value={c.webhook_url ?? ''} onChange={(e) => setC({ ...c, webhook_url: e.target.value })} placeholder="https://sistema.suaempresa.com.br/webhooks/certidoes" className={entrada} />
         </Campo>
-        <Campo rotulo="Segredo para conferir a assinatura (X-Certa-Assinatura)">
+        <Campo rotulo="Segredo para conferir a assinatura (X-Certify-Assinatura)">
           <div className="flex gap-2">
             <input readOnly value={c.webhook_segredo} className={`${entrada} font-mono text-xs`} />
             <Botao disabled={bloqueado} onClick={() => copiar(c.webhook_segredo, 'webhook')}>
@@ -160,8 +160,8 @@ export function Configuracoes({ token, espaco, emailServidor }: { token: string;
         <details className="rounded-xl bg-tinta-50 p-3 text-sm">
           <summary className="cursor-pointer font-medium">Formato do envio e como conferir a assinatura</summary>
           <pre className="mt-3 overflow-x-auto rounded-lg bg-tinta-900 p-3 text-xs leading-relaxed text-tinta-100">{`POST  Content-Type: application/json
-X-Certa-Evento: certidao.emitida
-X-Certa-Assinatura: sha256=<hmac>
+X-Certify-Evento: certidao.emitida
+X-Certify-Assinatura: sha256=<hmac>
 
 {
   "evento": "certidao.emitida",
@@ -174,10 +174,10 @@ X-Certa-Assinatura: sha256=<hmac>
   }
 }
 
-// Node.js — conferir que veio do CERTA
+// Node.js — conferir que veio do CERTIFY
 const esperado = 'sha256=' + crypto.createHmac('sha256', SEGREDO)
   .update(corpoBruto).digest('hex');
-if (req.headers['x-certa-assinatura'] !== esperado) return res.status(401).end();`}</pre>
+if (req.headers['x-certify-assinatura'] !== esperado) return res.status(401).end();`}</pre>
         </details>
       </Secao>
     </div>

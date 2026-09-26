@@ -15,7 +15,7 @@ export function Comecar({ claro = false }: { claro?: boolean }) {
 
   useEffect(() => {
     try {
-      setMeus(JSON.parse(localStorage.getItem('certa:paineis') ?? '[]'));
+      setMeus(JSON.parse(localStorage.getItem('certify:paineis') ?? '[]'));
     } catch {
       /* sem armazenamento local */
     }

@@ -148,7 +148,7 @@ function escrever(p: PDFPage, linhas: string[], fonte: PDFFont, tamanho: number,
 export async function gerarPdfDemo(d: DadosDemo): Promise<Uint8Array> {
   const pdf = await PDFDocument.create();
   pdf.setTitle(`Certidão de exemplo - ${d.tipo}`);
-  pdf.setProducer('CERTA (demonstração)');
+  pdf.setProducer('CERTIFY (demonstração)');
   const p = pdf.addPage([595, 842]);
   const normal = await pdf.embedFont(StandardFonts.Helvetica);
   const negrito = await pdf.embedFont(StandardFonts.HelveticaBold);
@@ -167,11 +167,11 @@ export async function gerarPdfDemo(d: DadosDemo): Promise<Uint8Array> {
   y -= 14;
   for (const r of rodape) y = escrever(p, quebrar(r, normal, 10, largura), normal, 10, y);
 
-  // Marca d'água e aviso: exemplo gerado pelo CERTA, sem valor legal.
+  // Marca d'água e aviso: exemplo gerado pelo CERTIFY, sem valor legal.
   p.drawText('DEMONSTRAÇÃO · SEM VALOR LEGAL', {
     x: 95, y: 250, size: 34, font: negrito, color: rgb(0.85, 0.2, 0.2), opacity: 0.14, rotate: degrees(35),
   });
-  p.drawText('Documento de exemplo gerado pelo CERTA para demonstração. Empresa e dados fictícios.', {
+  p.drawText('Documento de exemplo gerado pelo CERTIFY para demonstração. Empresa e dados fictícios.', {
     x: 60, y: 40, size: 8, font: normal, color: rgb(0.55, 0.2, 0.2),
   });
   return pdf.save();

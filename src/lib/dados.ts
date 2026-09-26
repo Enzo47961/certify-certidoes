@@ -30,25 +30,25 @@ export type CertidaoComArquivo = CertidaoResumo & { arquivo: string; empresa: st
 export const MAX_EMPRESAS = 20;
 
 export const espacoPorToken = (token: string) =>
-  /^[a-f0-9]{36}$/.test(token) ? rpc<Espaco | null>('certa_espaco', { p_token: token }) : Promise.resolve(null);
-export const espacoDemo = () => rpc<Espaco>('certa_espaco_demo');
-export const criarEspaco = (nome: string) => rpc<Espaco>('certa_criar_espaco', { p_nome: nome });
-export const empresasDo = (espaco: string) => rpc<EmpresaComCertidoes[]>('certa_empresas', { p_espaco: espaco });
+  /^[a-f0-9]{36}$/.test(token) ? rpc<Espaco | null>('certify_espaco', { p_token: token }) : Promise.resolve(null);
+export const espacoDemo = () => rpc<Espaco>('certify_espaco_demo');
+export const criarEspaco = (nome: string) => rpc<Espaco>('certify_criar_espaco', { p_nome: nome });
+export const empresasDo = (espaco: string) => rpc<EmpresaComCertidoes[]>('certify_empresas', { p_espaco: espaco });
 export const adicionarEmpresa = (espaco: string, empresa: Omit<Empresa, 'id'>) =>
-  rpc<Empresa>('certa_adicionar_empresa', { p_espaco: espaco, p_empresa: empresa, p_max: MAX_EMPRESAS });
+  rpc<Empresa>('certify_adicionar_empresa', { p_espaco: espaco, p_empresa: empresa, p_max: MAX_EMPRESAS });
 export const removerEmpresa = (espaco: string, empresa: string) =>
-  rpc<void>('certa_remover_empresa', { p_espaco: espaco, p_empresa: empresa });
+  rpc<void>('certify_remover_empresa', { p_espaco: espaco, p_empresa: empresa });
 export const historico = (espaco: string, empresa: string) =>
-  rpc<CertidaoResumo[]>('certa_historico', { p_espaco: espaco, p_empresa: empresa });
+  rpc<CertidaoResumo[]>('certify_historico', { p_espaco: espaco, p_empresa: empresa });
 export const arquivo = (espaco: string, certidao: string) =>
-  rpc<{ nome: string; arquivo: string } | null>('certa_arquivo', { p_espaco: espaco, p_certidao: certidao });
+  rpc<{ nome: string; arquivo: string } | null>('certify_arquivo', { p_espaco: espaco, p_certidao: certidao });
 export const vigentesComArquivo = (espaco: string) =>
-  rpc<CertidaoComArquivo[]>('certa_vigentes_com_arquivo', { p_espaco: espaco }, 30_000);
+  rpc<CertidaoComArquivo[]>('certify_vigentes_com_arquivo', { p_espaco: espaco }, 30_000);
 export const configurar = (espaco: string, config: Record<string, unknown>) =>
-  rpc<Espaco>('certa_configurar', { p_espaco: espaco, p_config: config });
-export const eventos = (espaco: string) => rpc<Evento[]>('certa_eventos', { p_espaco: espaco });
+  rpc<Espaco>('certify_configurar', { p_espaco: espaco, p_config: config });
+export const eventos = (espaco: string) => rpc<Evento[]>('certify_eventos', { p_espaco: espaco });
 export const registrarEvento = (espaco: string, tipo: string, status: Evento['status'], detalhe: string) =>
-  rpc<void>('certa_evento', { p_espaco: espaco, p_tipo: tipo, p_status: status, p_detalhe: detalhe }).catch(() => undefined);
+  rpc<void>('certify_evento', { p_espaco: espaco, p_tipo: tipo, p_status: status, p_detalhe: detalhe }).catch(() => undefined);
 
 export type NovaCertidao = {
   empresa_id: string;
@@ -65,4 +65,4 @@ export type NovaCertidao = {
 };
 
 export const salvarCertidao = (espaco: string, certidao: NovaCertidao) =>
-  rpc<CertidaoResumo>('certa_salvar_certidao', { p_espaco: espaco, p_certidao: certidao }, 30_000);
+  rpc<CertidaoResumo>('certify_salvar_certidao', { p_espaco: espaco, p_certidao: certidao }, 30_000);

@@ -23,7 +23,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ tok
     }
     if (acao === 'webhook') {
       if (!espaco.webhook_url) return erro(400, 'Cadastre o endereço do webhook primeiro.');
-      const r = await enviarWebhook(espaco.webhook_url, espaco.webhook_segredo, 'teste', { mensagem: 'Teste de integração do CERTA', painel: espaco.nome });
+      const r = await enviarWebhook(espaco.webhook_url, espaco.webhook_segredo, 'teste', { mensagem: 'Teste de integração do CERTIFY', painel: espaco.nome });
       await registrarEvento(espaco.id, 'webhook', r.ok ? 'ok' : 'erro', `Teste: ${r.detalhe}`);
       return r.ok ? NextResponse.json(r) : erro(400, r.detalhe);
     }

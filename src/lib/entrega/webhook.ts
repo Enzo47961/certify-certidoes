@@ -3,9 +3,9 @@ import { createHmac } from 'node:crypto';
 
 /**
  * Integração com sistema interno (jurídico, ERP, GED): a cada certidão nova o
- * CERTA faz um POST JSON assinado. O receptor confere a assinatura com o
+ * CERTIFY faz um POST JSON assinado. O receptor confere a assinatura com o
  * segredo exibido no painel:
- *   X-Certa-Assinatura: sha256=<HMAC-SHA256(corpo, segredo)>
+ *   X-Certify-Assinatura: sha256=<HMAC-SHA256(corpo, segredo)>
  */
 export function urlPermitida(url: string): string | null {
   let u: URL;
@@ -38,7 +38,7 @@ export async function enviarWebhook(url: string, segredo: string, evento: string
   try {
     const r = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'User-Agent': 'CERTA-webhook/1.0', 'X-Certa-Evento': evento, 'X-Certa-Assinatura': `sha256=${assinatura}` },
+      headers: { 'Content-Type': 'application/json', 'User-Agent': 'CERTIFY-webhook/1.0', 'X-Certify-Evento': evento, 'X-Certify-Assinatura': `sha256=${assinatura}` },
       body: corpo,
       redirect: 'manual',
       signal: AbortSignal.timeout(10_000),

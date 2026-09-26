@@ -55,7 +55,7 @@ export function Leitura({ token, nome, empresas }: { token: string; nome: string
             </ul>
           </section>
         ))}
-        <p className="text-center text-xs text-tinta-400">Gerado pelo CERTA · certidões em dia</p>
+        <p className="text-center text-xs text-tinta-400">Gerado pelo CERTIFY · certidões em dia</p>
       </main>
     </div>
   );

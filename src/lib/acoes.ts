@@ -146,7 +146,7 @@ const aleatorio = (min: number, max: number) => min + Math.floor(Math.random() *
 
 /** Recria o espaço de demonstração (chamado ao abrir a demo vazia e todo dia às 3h). */
 export async function recriarDemo(): Promise<Espaco> {
-  await rpc('certa_limpar_demo');
+  await rpc('certify_limpar_demo');
   const espaco = await espacoDemo();
   await configurar(espaco.id, { alerta_dias: 15 });
   const hoje = hojeIso();

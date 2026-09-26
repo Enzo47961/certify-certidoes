@@ -1,8 +1,8 @@
 {
-  "name": "certa-certidoes",
+  "name": "certify-certidoes",
   "version": "1.0.0",
   "private": true,
-  "description": "CERTA — certidões em dia: emite e acompanha as certidões fiscais e jurídicas da empresa pelo CNPJ, avisa antes de vencer e entrega por e-mail, pasta ou integração.",
+  "description": "CERTIFY — certidões em dia: emite e acompanha as certidões fiscais e jurídicas da empresa pelo CNPJ, avisa antes de vencer e entrega por e-mail, pasta ou integração.",
   "scripts": {
     "dev": "next dev -p 3400",
     "build": "next build",

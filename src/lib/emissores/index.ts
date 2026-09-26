@@ -25,6 +25,6 @@ export async function emitir(empresa: Empresa, tipo: TipoCertidao, demo: boolean
     status: 'assistida',
     link: url,
     linkExato: exato,
-    motivo: `${INFO[tipo].orgao(empresa)} exige a verificação "não sou um robô". Emita no site oficial e envie o PDF aqui: o CERTA lê a validade sozinho.`,
+    motivo: `${INFO[tipo].orgao(empresa)} exige a verificação "não sou um robô". Emita no site oficial e envie o PDF aqui: o CERTIFY lê a validade sozinho.`,
   };
 }

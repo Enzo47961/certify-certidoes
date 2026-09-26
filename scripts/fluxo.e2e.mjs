@@ -40,6 +40,6 @@ const esp = await j(`/p/${T}/configuracoes`); const tl = String(esp.b).length;
 ok('e-mail inválido recusado', (await post(`/api/p/${T}/config`, { email: 'x@' })).s === 400);
 ok('webhook interno bloqueado', (await post(`/api/p/${T}/config`, { webhook_url: 'https://127.0.0.1/x' })).s === 400);
 ok('webhook http bloqueado', (await post(`/api/p/${T}/config`, { webhook_url: 'http://exemplo.com' })).s === 400);
-const cfg = await post(`/api/p/${T}/config`, { email: 'teste@exemplo.com', rotina_ativa: true, rotina_dia: 1, rotina_hora: 8, alerta_dias: 20, webhook_url: 'https://webhook.site/certa-teste' });
+const cfg = await post(`/api/p/${T}/config`, { email: 'teste@exemplo.com', rotina_ativa: true, rotina_dia: 1, rotina_hora: 8, alerta_dias: 20, webhook_url: 'https://webhook.site/certify-teste' });
 ok('configuração salva', cfg.s === 200 && cfg.b.espaco.alerta_dias === 20 && cfg.b.espaco.token === undefined);
 console.log('TOKEN', T);

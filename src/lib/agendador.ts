@@ -20,11 +20,11 @@ export async function enviarResumoSemanal(espaco: Espaco): Promise<{ ok: boolean
 
 export async function enviarAlertas(espaco: Espaco): Promise<number> {
   if (!espaco.email || !espaco.alerta_ativo) return 0;
-  const itens = await rpc<ItemAlerta[]>('certa_alertas_pendentes', { p_espaco: espaco.id, p_dias: espaco.alerta_dias });
+  const itens = await rpc<ItemAlerta[]>('certify_alertas_pendentes', { p_espaco: espaco.id, p_dias: espaco.alerta_dias });
   if (itens.length === 0) return 0;
   const { assunto, html } = emailAlerta(espaco, itens, `${appUrl()}/p/${espaco.token}`);
   const r = await enviarEmail(espaco.email, assunto, html);
-  if (r.ok) await rpc('certa_marcar_alertas', { p_itens: itens.map((i) => ({ id: i.id, marco: i.marco })) });
+  if (r.ok) await rpc('certify_marcar_alertas', { p_itens: itens.map((i) => ({ id: i.id, marco: i.marco })) });
   await registrarEvento(espaco.id, 'alerta', r.ok ? 'ok' : 'erro', `Alerta de vencimento (${itens.length} certidão/ões): ${r.detalhe}`);
   return r.ok ? itens.length : 0;
 }
@@ -32,7 +32,7 @@ export async function enviarAlertas(espaco: Espaco): Promise<number> {
 /** Roda de hora em hora (pg_cron → /api/agendador). */
 export async function rodarAgendador(agora = new Date()) {
   const { hora } = agoraBrasilia(agora);
-  const espacos = await rpc<Espaco[]>('certa_espacos_agendados');
+  const espacos = await rpc<Espaco[]>('certify_espacos_agendados');
   const relatorio = { espacos: espacos.length, resumos: 0, alertas: 0, demo: false, erros: [] as string[] };
 
   for (const e of espacos) {

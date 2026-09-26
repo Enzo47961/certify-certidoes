@@ -1,5 +1,5 @@
 /**
- * Catálogo das certidões que o CERTA acompanha: órgão, validade usual e onde
+ * Catálogo das certidões que o CERTIFY acompanha: órgão, validade usual e onde
  * emitir. Validades marcadas como estimadas valem só até o PDF real ser lido
  * (a data impressa na certidão sempre prevalece).
  */

@@ -35,7 +35,7 @@ export default function Inicio() {
                 As certidões da empresa em dia, sem abrir sete sites.
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-petroleo-100">
-                Informe o CNPJ. O CERTA reúne Federal, FGTS, Trabalhista, Estadual, Municipal, Falência e a consulta do TCU num painel só, avisa antes de
+                Informe o CNPJ. O CERTIFY reúne Federal, FGTS, Trabalhista, Estadual, Municipal, Falência e a consulta do TCU num painel só, avisa antes de
                 vencer e entrega os PDFs por e-mail, pasta ou integração com o seu sistema.
               </p>
               <div className="mt-8">
@@ -82,7 +82,7 @@ export default function Inicio() {
           <ol className="mt-8 grid gap-4 md:grid-cols-3">
             {[
               ['1', 'Informe o CNPJ', 'Razão social, UF e município vêm do cadastro público da Receita. O painel já sabe qual SEFAZ, prefeitura e tribunal procurar.'],
-              ['2', 'Emita e guarde', 'O que sai automático é emitido na hora. O resto abre no site oficial certo; você envia o PDF e o CERTA lê resultado, número e validade.'],
+              ['2', 'Emita e guarde', 'O que sai automático é emitido na hora. O resto abre no site oficial certo; você envia o PDF e o CERTIFY lê resultado, número e validade.'],
               ['3', 'Receba antes de vencer', 'Alerta com antecedência, resumo semanal com os PDFs, pasta ZIP organizada e envio para o seu sistema interno.'],
             ].map(([n, t, d]) => (
               <li key={n} className="rounded-3xl border border-tinta-200 bg-white p-6 shadow-suave">
@@ -96,7 +96,7 @@ export default function Inicio() {
 
         {/* Certidões */}
         <section>
-          <h2 className="font-display text-3xl font-extrabold tracking-tight">As certidões que o CERTA acompanha</h2>
+          <h2 className="font-display text-3xl font-extrabold tracking-tight">As certidões que o CERTIFY acompanha</h2>
           <p className="mt-2 max-w-2xl text-tinta-600">A validade impressa no PDF sempre prevalece; a coluna mostra o prazo usual de cada órgão.</p>
           <div className="mt-6 overflow-x-auto rounded-3xl border border-tinta-200 bg-white shadow-suave">
             <table className="w-full min-w-[680px] text-left text-sm">
@@ -162,12 +162,12 @@ export default function Inicio() {
           <div className="mt-4 grid gap-6 text-sm leading-relaxed text-tinta-700 md:grid-cols-2">
             <p>
               Nenhuma dessas certidões exige login ou certificado digital: basta o CNPJ. Mas os sites da Receita, Caixa, TST, SEFAZ e prefeituras colocam a
-              verificação “não sou um robô” antes de emitir. O CERTA não tenta burlar essa proteção: abre o site oficial certo, com o CNPJ copiado, e lê
+              verificação “não sou um robô” antes de emitir. O CERTIFY não tenta burlar essa proteção: abre o site oficial certo, com o CNPJ copiado, e lê
               sozinho o PDF que você baixa.
             </p>
             <p>
               A consulta consolidada do TCU (inidôneos, improbidade no CNJ, CEIS e CNEP) tem serviço público aberto e sai 100% automática. Para as demais,
-              o CERTA traz pronto o conector de um provedor autorizado (Infosimples): com a chave configurada, Federal, FGTS, Trabalhista e Estadual passam a
+              o CERTIFY traz pronto o conector de um provedor autorizado (Infosimples): com a chave configurada, Federal, FGTS, Trabalhista e Estadual passam a
               ser emitidas sem clique.
             </p>
           </div>
@@ -183,7 +183,7 @@ export default function Inicio() {
       </main>
 
       <footer className="border-t border-tinta-200 py-8 text-center text-sm text-tinta-500">
-        CERTA · projeto de portfólio de{' '}
+        CERTIFY · projeto de portfólio de{' '}
         <a href="https://enzo-ferrara.vercel.app" className="font-medium text-petroleo-700 hover:underline">
           Enzo Ferrara
         </a>

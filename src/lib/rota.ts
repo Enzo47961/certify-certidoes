@@ -36,7 +36,7 @@ export async function tratar(fn: () => Promise<Response>): Promise<Response> {
     if (e instanceof ErroHttp) return erro(e.status, e.message);
     const msg = e instanceof Error ? e.message : String(e);
     if (msg.includes('LIMITE_EMPRESAS')) return erro(409, 'Limite de empresas deste painel atingido.');
-    console.error('[certa]', e);
+    console.error('[certify]', e);
     return erro(500, 'Algo deu errado do nosso lado. Tente de novo em instantes.');
   }
 }

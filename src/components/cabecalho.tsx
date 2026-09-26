@@ -7,7 +7,7 @@ export function Marca({ claro = false }: { claro?: boolean }) {
       <span className="flex size-8 items-center justify-center rounded-lg bg-petroleo-800 text-selo-400">
         <IconeSelo size={18} />
       </span>
-      <span className={`font-display text-lg font-extrabold tracking-tight ${claro ? 'text-white' : 'text-tinta-900'}`}>CERTA</span>
+      <span className={`font-display text-lg font-extrabold tracking-tight ${claro ? 'text-white' : 'text-tinta-900'}`}>CERTIFY</span>
     </span>
   );
 }
@@ -26,7 +26,7 @@ export function Cabecalho({ token, nome, demo, ativo }: { token: string; nome: s
     <header className="border-b border-tinta-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <div className="flex min-w-0 items-center gap-3">
-          <Link href="/" aria-label="CERTA — início">
+          <Link href="/" aria-label="CERTIFY — início">
             <Marca />
           </Link>
           <span className="hidden h-6 w-px bg-tinta-200 sm:block" />

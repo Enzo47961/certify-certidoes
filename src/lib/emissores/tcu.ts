@@ -17,7 +17,7 @@ const assistida = (motivo: string): Emissao => ({ status: 'assistida', link: CON
  * CNJ, CEIS e CNEP).
  *
  * O TCU protege o serviço com firewall: acima de um volume, bloqueia o IP por
- * um tempo e responde uma página HTML. O CERTA respeita isso — limita o próprio
+ * um tempo e responde uma página HTML. O CERTIFY respeita isso — limita o próprio
  * ritmo e, se for bloqueado, passa a certidão para a emissão assistida em vez
  * de insistir.
  */

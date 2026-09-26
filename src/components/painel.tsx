@@ -50,9 +50,9 @@ export function Painel({
   useEffect(() => {
     if (espaco.demo) return;
     try {
-      const lista = JSON.parse(localStorage.getItem('certa:paineis') ?? '[]') as Array<{ token: string; nome: string }>;
+      const lista = JSON.parse(localStorage.getItem('certify:paineis') ?? '[]') as Array<{ token: string; nome: string }>;
       const nova = [{ token: espaco.token, nome: espaco.nome }, ...lista.filter((p) => p.token !== espaco.token)].slice(0, 5);
-      localStorage.setItem('certa:paineis', JSON.stringify(nova));
+      localStorage.setItem('certify:paineis', JSON.stringify(nova));
     } catch {
       /* armazenamento bloqueado: segue sem lembrar */
     }
@@ -232,7 +232,7 @@ export function Painel({
               </span>
               <h3 className="mt-4 font-display text-lg font-bold">Adicione a primeira empresa</h3>
               <p className="mx-auto mt-1 max-w-md text-sm text-tinta-500">
-                Informe o CNPJ: o CERTA busca a razão social, a UF e o município na Receita e já emite o que for automático.
+                Informe o CNPJ: o CERTIFY busca a razão social, a UF e o município na Receita e já emite o que for automático.
               </p>
               <Botao variante="primario" className="mt-5" onClick={() => setAdicionando(true)}>
                 <IconeMais size={16} /> Adicionar empresa
@@ -317,7 +317,7 @@ export function Painel({
           {assistidas ? (
             <p className="border-t border-tinta-100 px-4 py-3 text-xs text-tinta-500">
               Federal, FGTS, Trabalhista, Estadual, Municipal e Falência exigem “não sou um robô” nos sites oficiais: clique na certidão, emita no site e
-              envie o PDF. O CERTA lê a validade sozinho. Com o conector Infosimples ligado, elas passam a sair automaticamente.
+              envie o PDF. O CERTIFY lê a validade sozinho. Com o conector Infosimples ligado, elas passam a sair automaticamente.
             </p>
           ) : null}
         </section>

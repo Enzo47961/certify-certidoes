@@ -283,7 +283,7 @@ function CartaoCertidao({
             </li>
             <li className="flex flex-wrap items-center gap-2">
               <span className="font-semibold text-petroleo-700">2.</span>
-              <span>Envie o PDF baixado — o CERTA lê resultado, número e validade:</span>
+              <span>Envie o PDF baixado — o CERTIFY lê resultado, número e validade:</span>
               <Botao tamanho="sm" onClick={() => entrada.current?.click()} carregando={ocupado === 'enviar'}>
                 <IconeUpload size={15} /> Enviar PDF
               </Botao>

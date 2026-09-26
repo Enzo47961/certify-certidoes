@@ -122,7 +122,7 @@ export function AdicionarEmpresa({ aberto, aoFechar, token, demo, aoAdicionar }:
             {etapa === 'emitindo' ? 'Emitindo o que é automático…' : (<><IconeSelo size={16} /> Adicionar e emitir certidões</>)}
           </Botao>
           <p className="text-xs leading-relaxed text-tinta-500">
-            Os dados vêm do cadastro público do CNPJ. Em seguida o CERTA emite a consulta consolidada do TCU (oficial e automática) e mostra, para cada
+            Os dados vêm do cadastro público do CNPJ. Em seguida o CERTIFY emite a consulta consolidada do TCU (oficial e automática) e mostra, para cada
             outra certidão, o link do site certo para emitir.
           </p>
         </div>
