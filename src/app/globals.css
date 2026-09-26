@@ -1,0 +1,75 @@
+@import 'tailwindcss';
+
+/* CERTA — verde-petróleo de carimbo, papel e tinta. */
+@theme {
+  --font-sans: var(--fonte-texto), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: var(--fonte-titulo), var(--fonte-texto), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --color-papel: #f7f6f2;
+  --color-tinta-50: #f4f4f1;
+  --color-tinta-100: #e9e8e3;
+  --color-tinta-200: #d6d4cc;
+  --color-tinta-300: #b3b0a5;
+  --color-tinta-400: #8a877b;
+  --color-tinta-500: #6a675d;
+  --color-tinta-600: #524f47;
+  --color-tinta-700: #3d3b35;
+  --color-tinta-800: #26251f;
+  --color-tinta-900: #171612;
+
+  --color-petroleo-50: #eaf4f3;
+  --color-petroleo-100: #cfe6e4;
+  --color-petroleo-200: #a3cfcb;
+  --color-petroleo-400: #3f8f8a;
+  --color-petroleo-500: #1f7570;
+  --color-petroleo-600: #155f5b;
+  --color-petroleo-700: #104b48;
+  --color-petroleo-800: #0f3d3e;
+  --color-petroleo-900: #0a2a2b;
+
+  --color-selo-300: #f3d98b;
+  --color-selo-400: #e9c25a;
+  --color-selo-500: #d4a72c;
+
+  --color-ok-50: #ecfdf3;
+  --color-ok-100: #d1fadf;
+  --color-ok-600: #15803d;
+  --color-ok-700: #166534;
+  --color-aviso-50: #fff8eb;
+  --color-aviso-100: #fdecc8;
+  --color-aviso-600: #b45309;
+  --color-aviso-700: #92400e;
+  --color-perigo-50: #fef2f2;
+  --color-perigo-100: #fde0dd;
+  --color-perigo-600: #c2261d;
+  --color-perigo-700: #9b1c15;
+
+  --shadow-suave: 0 1px 2px rgb(23 22 18 / 0.05), 0 8px 24px -12px rgb(23 22 18 / 0.16);
+  --shadow-alta: 0 2px 4px rgb(23 22 18 / 0.06), 0 28px 56px -20px rgb(23 22 18 / 0.3);
+
+  --animate-surgir: surgir 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-deslizar: deslizar 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes surgir {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes deslizar {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+html { background: var(--color-papel); color: var(--color-tinta-900); }
+body { font-feature-settings: 'cv11', 'ss01'; }
+:focus-visible { outline: 2px solid var(--color-petroleo-500); outline-offset: 2px; }
+
+.textura {
+  background-image: radial-gradient(circle at 1px 1px, rgb(15 61 62 / 0.07) 1px, transparent 0);
+  background-size: 18px 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
