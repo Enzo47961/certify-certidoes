@@ -3,10 +3,9 @@ import { notFound, redirect } from 'next/navigation';
 import { Cabecalho } from '@/components/cabecalho';
 import { Configuracoes } from '@/components/configuracoes';
 import { espacoPorToken } from '@/lib/dados';
-import { emailConfigurado } from '@/lib/entrega/email';
 
 export const dynamic = 'force-dynamic';
-export const metadata: Metadata = { title: 'Entregas e alertas', robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: 'Exportar e integrar', robots: { index: false, follow: false } };
 
 export default async function PaginaConfig({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
@@ -19,20 +18,14 @@ export default async function PaginaConfig({ params }: { params: Promise<{ token
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         <Configuracoes
           token={token}
-          emailServidor={emailConfigurado()}
           espaco={{
             nome: espaco.nome,
             demo: espaco.demo,
-            email: espaco.email,
-            rotina_ativa: espaco.rotina_ativa,
-            rotina_dia: espaco.rotina_dia,
-            rotina_hora: espaco.rotina_hora,
             alerta_ativo: espaco.alerta_ativo,
             alerta_dias: espaco.alerta_dias,
             webhook_url: espaco.webhook_url,
             webhook_segredo: espaco.demo ? '••••••••' : espaco.webhook_segredo,
             token_leitura: espaco.token_leitura,
-            ultimo_envio: espaco.ultimo_envio,
           }}
         />
       </main>

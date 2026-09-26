@@ -76,15 +76,3 @@ test('leitura: formatos dos órgãos', () => {
   assert.equal(semData.validaAte, '2027-02-28'); // 180 dias
   assert.equal(semData.validadeEstimada, true);
 });
-
-test('rotina semanal: dia e hora de Brasília, sem envio duplicado', async () => {
-  const { agoraBrasilia, rotinaDevida } = await import('../src/lib/rotina');
-  const segunda8h = new Date('2026-09-28T11:05:00Z'); // 08:05 em Brasília
-  assert.deepEqual(agoraBrasilia(segunda8h), { dia: 1, hora: 8 });
-  const rotina = { rotina_ativa: true, rotina_dia: 1, rotina_hora: 8, ultimo_envio: null as string | null };
-  assert.equal(rotinaDevida(rotina, segunda8h), true);
-  assert.equal(rotinaDevida({ ...rotina, rotina_hora: 9 }, segunda8h), false);
-  assert.equal(rotinaDevida({ ...rotina, ultimo_envio: '2026-09-28T11:00:30Z' }, segunda8h), false);
-  assert.equal(rotinaDevida({ ...rotina, ultimo_envio: '2026-09-21T11:00:30Z' }, segunda8h), true);
-  assert.equal(rotinaDevida({ ...rotina, rotina_ativa: false }, segunda8h), false);
-});

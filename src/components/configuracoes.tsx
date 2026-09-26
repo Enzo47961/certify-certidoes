@@ -2,27 +2,20 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
-import { IconeCopiar, IconeDownload, IconeEmail, IconeLink, IconePasta, IconeSino } from './icones';
+import { IconeCopiar, IconeDownload, IconeLink, IconePasta, IconeSino } from './icones';
 import { Aviso, Botao, chamar } from './ui';
 
 type Config = {
   nome: string;
   demo: boolean;
-  email: string | null;
-  rotina_ativa: boolean;
-  rotina_dia: number;
-  rotina_hora: number;
   alerta_ativo: boolean;
   alerta_dias: number;
   webhook_url: string | null;
   webhook_segredo: string;
   token_leitura: string;
-  ultimo_envio: string | null;
 };
 
-const DIAS = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-
-export function Configuracoes({ token, espaco, emailServidor }: { token: string; espaco: Config; emailServidor: boolean }) {
+export function Configuracoes({ token, espaco }: { token: string; espaco: Config }) {
   const router = useRouter();
   const [c, setC] = useState(espaco);
   const [origem, setOrigem] = useState('');
@@ -42,9 +35,9 @@ export function Configuracoes({ token, espaco, emailServidor }: { token: string;
     } else avisar(secao, 'perigo', r.erro);
   }
 
-  async function testar(secao: string, acao: 'email' | 'webhook') {
+  async function testar(secao: string) {
     setOcupado(`${secao}-teste`);
-    const r = await chamar<{ detalhe: string }>(`/api/p/${token}/testar`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ acao }) });
+    const r = await chamar<{ detalhe: string }>(`/api/p/${token}/testar`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' });
     setOcupado(null);
     avisar(secao, r.ok ? 'ok' : 'perigo', r.ok ? r.dados.detalhe : r.erro);
   }
@@ -58,65 +51,15 @@ export function Configuracoes({ token, espaco, emailServidor }: { token: string;
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-extrabold">Entregas e alertas</h1>
-        <p className="mt-1 text-sm text-tinta-500">Como as certidões chegam até você e quem mais precisa delas.</p>
+        <h1 className="font-display text-2xl font-extrabold">Exportar e integrar</h1>
+        <p className="mt-1 text-sm text-tinta-500">Como as certidões saem do CERTIFY: pasta, link de consulta e integração com o seu sistema.</p>
       </div>
       {bloqueado ? (
         <Aviso>
-          Na demonstração, e-mail e integração ficam desligados (para ninguém disparar mensagens a terceiros). A pasta ZIP e o link de consulta funcionam.
+          Na demonstração a integração fica desligada (para ninguém disparar envios a sistemas de terceiros). A pasta ZIP e o link de consulta funcionam.
           Crie o seu painel na página inicial para configurar tudo.
         </Aviso>
       ) : null}
-
-      <Secao icone={<IconeEmail />} titulo="E-mail semanal com as certidões" descricao="Um resumo da situação de cada empresa, com os PDFs vigentes anexados, no dia e hora que você escolher.">
-        {!emailServidor && !bloqueado ? <Aviso tom="perigo">O envio de e-mail ainda não foi configurado neste servidor (chave do Resend).</Aviso> : null}
-        <div className="grid gap-3 sm:grid-cols-[1fr_auto_auto]">
-          <Campo rotulo="Enviar para">
-            <input type="email" disabled={bloqueado} value={c.email ?? ''} onChange={(e) => setC({ ...c, email: e.target.value })} placeholder="financeiro@suaempresa.com.br" className={entrada} />
-          </Campo>
-          <Campo rotulo="Dia">
-            <select disabled={bloqueado} value={c.rotina_dia} onChange={(e) => setC({ ...c, rotina_dia: Number(e.target.value) })} className={entrada}>
-              {DIAS.map((d, i) => <option key={d} value={i}>{d}</option>)}
-            </select>
-          </Campo>
-          <Campo rotulo="Horário">
-            <select disabled={bloqueado} value={c.rotina_hora} onChange={(e) => setC({ ...c, rotina_hora: Number(e.target.value) })} className={entrada}>
-              {Array.from({ length: 24 }, (_, h) => <option key={h} value={h}>{String(h).padStart(2, '0')}:00</option>)}
-            </select>
-          </Campo>
-        </div>
-        <Interruptor disabled={bloqueado} ligado={c.rotina_ativa} aoMudar={(v) => setC({ ...c, rotina_ativa: v })}>
-          Enviar toda {DIAS[c.rotina_dia].toLowerCase()} às {String(c.rotina_hora).padStart(2, '0')}h (horário de Brasília)
-        </Interruptor>
-        {c.ultimo_envio ? <p className="text-xs text-tinta-500">Último envio: {new Date(c.ultimo_envio).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}</p> : null}
-        <div className="flex flex-wrap gap-2">
-          <Botao variante="primario" disabled={bloqueado} carregando={ocupado === 'email'} onClick={() => salvar('email', { email: c.email ?? '', rotina_ativa: c.rotina_ativa, rotina_dia: c.rotina_dia, rotina_hora: c.rotina_hora })}>
-            Salvar
-          </Botao>
-          <Botao disabled={bloqueado || !espaco.email} carregando={ocupado === 'email-teste'} onClick={() => testar('email', 'email')}>
-            Enviar agora
-          </Botao>
-        </div>
-        <Retorno r={retorno.email} />
-      </Secao>
-
-      <Secao icone={<IconeSino />} titulo="Alerta de vencimento" descricao="E-mail quando uma certidão entra na janela de renovação, e de novo a 7 dias, 1 dia e no vencimento. Cada aviso sai uma vez só.">
-        <div className="flex flex-wrap items-end gap-3">
-          <Campo rotulo="Avisar com antecedência de">
-            <select disabled={bloqueado} value={c.alerta_dias} onChange={(e) => setC({ ...c, alerta_dias: Number(e.target.value) })} className={entrada}>
-              {[5, 10, 15, 20, 30, 45, 60].map((d) => <option key={d} value={d}>{d} dias</option>)}
-            </select>
-          </Campo>
-          <Interruptor disabled={bloqueado} ligado={c.alerta_ativo} aoMudar={(v) => setC({ ...c, alerta_ativo: v })}>
-            Alertas ligados
-          </Interruptor>
-        </div>
-        <p className="text-xs text-tinta-500">Os alertas vão para o mesmo e-mail do resumo, no horário escolhido acima. A janela também define o que aparece como “vencendo” no painel.</p>
-        <Botao variante="primario" disabled={bloqueado} carregando={ocupado === 'alerta'} onClick={() => salvar('alerta', { alerta_dias: c.alerta_dias, alerta_ativo: c.alerta_ativo })}>
-          Salvar
-        </Botao>
-        <Retorno r={retorno.alerta} />
-      </Secao>
 
       <Secao icone={<IconePasta />} titulo="Pasta e compartilhamento" descricao="Para o servidor de arquivos, o setor de licitações ou o contador.">
         <div className="flex flex-wrap gap-2">
@@ -136,7 +79,25 @@ export function Configuracoes({ token, espaco, emailServidor }: { token: string;
         <Retorno r={retorno.pasta} />
       </Secao>
 
-      <Secao icone={<IconeLink />} titulo="Integração com sistema interno" descricao="A cada certidão nova, o CERTIFY envia um POST com os dados e o PDF para o seu sistema jurídico, ERP ou GED.">
+      <Secao icone={<IconeSino />} titulo="Alerta de vencimento" descricao="Define quando uma certidão passa a aparecer como “vencendo” no painel e em Próximos vencimentos.">
+        <div className="flex flex-wrap items-end gap-3">
+          <Campo rotulo="Avisar com antecedência de">
+            <select disabled={bloqueado} value={c.alerta_dias} onChange={(e) => setC({ ...c, alerta_dias: Number(e.target.value) })} className={entrada}>
+              {[5, 10, 15, 20, 30, 45, 60].map((d) => <option key={d} value={d}>{d} dias</option>)}
+            </select>
+          </Campo>
+          <Interruptor disabled={bloqueado} ligado={c.alerta_ativo} aoMudar={(v) => setC({ ...c, alerta_ativo: v })}>
+            Avisar também a integração
+          </Interruptor>
+        </div>
+        <p className="text-xs text-tinta-500">Com a integração configurada (abaixo), o CERTIFY envia todo dia às 8h o evento <code className="font-mono">certidoes.vencendo</code> com as certidões que entraram na janela, e de novo a 7 dias, 1 dia e no vencimento. Cada aviso sai uma vez só.</p>
+        <Botao variante="primario" disabled={bloqueado} carregando={ocupado === 'alerta'} onClick={() => salvar('alerta', { alerta_dias: c.alerta_dias, alerta_ativo: c.alerta_ativo })}>
+          Salvar
+        </Botao>
+        <Retorno r={retorno.alerta} />
+      </Secao>
+
+      <Secao icone={<IconeLink />} titulo="Integração com sistema interno" descricao="A cada certidão nova, e nos avisos de vencimento, o CERTIFY envia um POST com os dados (e o PDF) para o seu sistema jurídico, ERP ou GED.">
         <Campo rotulo="Endereço (https) que recebe as certidões">
           <input disabled={bloqueado} value={c.webhook_url ?? ''} onChange={(e) => setC({ ...c, webhook_url: e.target.value })} placeholder="https://sistema.suaempresa.com.br/webhooks/certidoes" className={entrada} />
         </Campo>
@@ -152,7 +113,7 @@ export function Configuracoes({ token, espaco, emailServidor }: { token: string;
           <Botao variante="primario" disabled={bloqueado} carregando={ocupado === 'webhook'} onClick={() => salvar('webhook', { webhook_url: c.webhook_url ?? '' })}>
             Salvar
           </Botao>
-          <Botao disabled={bloqueado || !espaco.webhook_url} carregando={ocupado === 'webhook-teste'} onClick={() => testar('webhook', 'webhook')}>
+          <Botao disabled={bloqueado || !espaco.webhook_url} carregando={ocupado === 'webhook-teste'} onClick={() => testar('webhook')}>
             Enviar teste
           </Botao>
         </div>
@@ -173,6 +134,12 @@ X-Certify-Assinatura: sha256=<hmac>
     "pdf_base64": "JVBERi0xLjcK…"
   }
 }
+
+// Todo dia às 8h, se houver certidão entrando na janela de alerta:
+X-Certify-Evento: certidoes.vencendo
+{ "evento": "certidoes.vencendo", "dados": { "painel": "https://…",
+  "certidoes": [ { "empresa": "…", "cnpj": "…", "tipo": "fgts",
+                   "valida_ate": "2026-10-05", "dias_para_vencer": 7 } ] } }
 
 // Node.js — conferir que veio do CERTIFY
 const esperado = 'sha256=' + crypto.createHmac('sha256', SEGREDO)

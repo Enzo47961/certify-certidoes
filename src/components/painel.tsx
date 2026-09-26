@@ -21,7 +21,7 @@ export type EmpresaPainel = {
   certidoes: CertidaoResumo[];
 };
 
-export type EspacoPainel = { token: string; token_leitura: string; nome: string; demo: boolean; alerta_dias: number; email: string | null };
+export type EspacoPainel = { token: string; token_leitura: string; nome: string; demo: boolean; alerta_dias: number };
 export type EventoPainel = { id: number; tipo: string; status: 'ok' | 'erro' | 'info'; detalhe: string | null; criado_em: string };
 
 type Filtro = 'todas' | 'atencao' | 'vencidas' | 'pendentes';

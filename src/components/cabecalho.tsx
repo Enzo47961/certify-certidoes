@@ -35,7 +35,7 @@ export function Cabecalho({ token, nome, demo, ativo }: { token: string; nome: s
         </div>
         <nav className="flex gap-1" aria-label="Seções do painel">
           {aba(`/p/${token}`, 'Painel', ativo === 'painel')}
-          {aba(`/p/${token}/configuracoes`, (<><IconeEngrenagem size={15} /> Entregas e alertas</>), ativo === 'config')}
+          {aba(`/p/${token}/configuracoes`, (<><IconeEngrenagem size={15} /> Exportar e integrar</>), ativo === 'config')}
         </nav>
       </div>
     </header>

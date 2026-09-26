@@ -1,16 +1,16 @@
 # CERTIFY · certidões em dia
 
-![Next.js](https://img.shields.io/badge/Next.js_15-000?logo=nextdotjs) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff) ![Tailwind](https://img.shields.io/badge/Tailwind_v4-06B6D4?logo=tailwindcss&logoColor=fff) ![Supabase](https://img.shields.io/badge/Supabase-Postgres_%2B_pg__cron-3ECF8E?logo=supabase&logoColor=fff) ![Resend](https://img.shields.io/badge/e--mail-Resend-000)
+![Next.js](https://img.shields.io/badge/Next.js_15-000?logo=nextdotjs) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff) ![Tailwind](https://img.shields.io/badge/Tailwind_v4-06B6D4?logo=tailwindcss&logoColor=fff) ![Supabase](https://img.shields.io/badge/Supabase-Postgres_%2B_pg__cron-3ECF8E?logo=supabase&logoColor=fff)
 
 **🔗 Demo ao vivo: [certify-certidoes.vercel.app](https://certify-certidoes.vercel.app)** · painel de exemplo em [/demo](https://certify-certidoes.vercel.app/demo) · ou crie o seu painel na página inicial (sem cadastro).
 
 ![Painel do CERTIFY](docs/painel.png)
 
-Informe o CNPJ e acompanhe, num painel só, as certidões fiscais e jurídicas que licitações, bancos e clientes pedem: **Federal (Receita/PGFN), FGTS, Trabalhista (TST), Estadual, Municipal, Falência (TJ) e a consulta consolidada do TCU**. O CERTIFY avisa antes de vencer e entrega os PDFs por e-mail, pasta ZIP, link de consulta ou integração com o sistema interno.
+Informe o CNPJ e acompanhe, num painel só, as certidões fiscais e jurídicas que licitações, bancos e clientes pedem: **Federal (Receita/PGFN), FGTS, Trabalhista (TST), Estadual, Municipal, Falência (TJ) e a consulta consolidada do TCU**. O CERTIFY destaca o que está para vencer e exporta os PDFs em pasta ZIP, link de consulta ou integração com o sistema interno.
 
-| Certidão aberta no painel | Entregas e alertas |
+| Certidão aberta no painel | Exportar e integrar |
 | --- | --- |
-| ![Certidão](docs/certidao.png) | ![Entregas](docs/entregas.png) |
+| ![Certidão](docs/certidao.png) | ![Exportar e integrar](docs/exportar.png) |
 
 ---
 
@@ -23,11 +23,10 @@ Informe o CNPJ e acompanhe, num painel só, as certidões fiscais e jurídicas q
 | **Emissão** | Automática quando existe canal aberto; assistida quando o órgão exige CAPTCHA (ver abaixo) |
 | **Leitura do PDF** | O PDF oficial enviado é lido sozinho: tipo, resultado (negativa / positiva com efeitos de negativa / positiva), número ou código de controle, emissão e validade. Recusa PDF de outro CNPJ |
 | **Visualizar** | PDF aberto na própria ferramenta, histórico de todas as emissões |
-| **Alertas** | E-mail quando a certidão entra na janela de renovação (5 a 60 dias, você escolhe), e de novo a 7 dias, 1 dia e no vencimento — cada aviso uma vez só |
-| **E-mail semanal** | No dia e hora escolhidos (ex.: toda segunda às 8h): situação de cada empresa e os PDFs vigentes anexados |
+| **Alertas** | Janela de renovação configurável (5 a 60 dias): o painel destaca o que vence e lista os próximos vencimentos. Com integração, o sistema recebe o aviso todo dia às 8h — na janela, a 7 dias, 1 dia e no vencimento, cada um uma vez só |
 | **Pasta** | ZIP com uma pasta por empresa, arquivos nomeados pela validade e um `resumo.csv` que abre no Excel |
 | **Link de consulta** | Um segundo link, só de leitura e download, para o contador, o cliente ou o setor de licitações |
-| **Integração** | Webhook `POST` a cada certidão nova, com os dados e o PDF, assinado com HMAC-SHA256 (`X-Certify-Assinatura`) para o sistema jurídico, ERP ou GED |
+| **Integração** | Webhook `POST` a cada certidão nova (com o PDF) e a cada aviso de vencimento, assinado com HMAC-SHA256 (`X-Certify-Assinatura`), para o sistema jurídico, ERP ou GED |
 
 ## Emissão: o que é automático e por quê
 
@@ -50,11 +49,10 @@ Navegador ──► Next.js 15 (App Router, Route Handlers)
                  ├─► BrasilAPI / CNPJ.ws ........ dados do CNPJ
                  ├─► TCU (API pública) ........... consulta consolidada em PDF
                  ├─► Infosimples (opcional) ...... demais certidões
-                 ├─► Resend ...................... e-mail semanal e alertas
-                 ├─► Webhook do cliente .......... integração (HMAC)
+                 ├─► Webhook do cliente .......... certidões novas e avisos de vencimento (HMAC)
                  └─► Supabase Postgres (schema "certidoes", só via funções com segredo)
                           ▲
-       pg_cron + pg_net ──┘  de hora em hora → /api/agendador (rotina semanal, alertas, demo às 3h)
+       pg_cron + pg_net ──┘  de hora em hora → /api/agendador (avisos de vencimento às 8h, demo às 3h)
 ```
 
 - **Sem login, com link secreto**: cada painel tem um token de 144 bits (administração) e outro de leitura. As rotas conferem que cada empresa e certidão pertencem ao painel do link.
@@ -69,8 +67,8 @@ src/lib/
 ├── leitura.ts         # leitura do PDF (tipo, resultado, número, emissão, validade, CNPJ) — testada
 ├── situacao.ts        # válida / vencendo / vencida / pendência — testada
 ├── emissores/         # tcu · infosimples · demo · roteamento
-├── entrega/           # e-mail (Resend), webhook (HMAC), ZIP (fflate)
-├── agendador.ts       # rotina semanal + alertas + demo
+├── entrega/           # webhook (HMAC) e ZIP (fflate)
+├── agendador.ts       # avisos de vencimento + demo
 └── pdf-demo.ts        # certidões de exemplo no formato de cada órgão (pdf-lib)
 ```
 
@@ -81,7 +79,7 @@ npm install
 # banco: aplique supabase/migrations/*.sql (o 000300 precisa da URL do app e do CRON_SECRET)
 cp .env.example .env.local
 npm run dev        # http://localhost:3400  →  /demo cria a demonstração
-npm test           # CNPJ, situação, rotina semanal e leitura de PDFs (inclui um PDF real do TCU)
+npm test           # CNPJ, situação e leitura de PDFs (inclui um PDF real do TCU)
 node scripts/fluxo.e2e.mjs http://localhost:3400   # fluxo completo pela API
 ```
 
@@ -89,5 +87,4 @@ node scripts/fluxo.e2e.mjs http://localhost:3400   # fluxo completo pela API
 
 - **Estadual e municipal** variam por UF e por prefeitura (são mais de 5.500 municípios). O link aponta para o site oficial de SP; nos demais casos, abre a busca pelo órgão certo.
 - **TJ fora de SP**: formatos de certidão de falência variam; o PDF é lido, mas a validade pode vir estimada (marcada como “usual” no painel).
-- **E-mail**: sem domínio verificado no Resend, o envio só chega ao dono da conta — suficiente para demonstração.
 - **Sem login**: quem tem o link administra o painel. Para uso comercial, o próximo passo é autenticação por e-mail e papéis (admin / leitura).

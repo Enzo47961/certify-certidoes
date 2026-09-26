@@ -19,7 +19,6 @@ export const IconeRaio = (p: P) => <Base {...p}><path d="M13 3L5 13.5h6L10 21l8-
 export const IconeDownload = (p: P) => <Base {...p}><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14" /></Base>;
 export const IconeUpload = (p: P) => <Base {...p}><path d="M12 20V9M7 13.5l5-5 5 5M5 4h14" /></Base>;
 export const IconePasta = (p: P) => <Base {...p}><path d="M3 7.5A1.5 1.5 0 014.5 6h4.3l2 2h8.7A1.5 1.5 0 0121 9.5v8a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 17.5v-10z" /></Base>;
-export const IconeEmail = (p: P) => <Base {...p}><rect x="3" y="5.5" width="18" height="13" rx="2" /><path d="M3.5 7l8.5 6 8.5-6" /></Base>;
 export const IconeSino = (p: P) => <Base {...p}><path d="M6 16.5V11a6 6 0 1112 0v5.5l1.5 1.5h-15L6 16.5zM10 20.5a2.2 2.2 0 004 0" /></Base>;
 export const IconeLink = (p: P) => <Base {...p}><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1" /></Base>;
 export const IconeEngrenagem = (p: P) => (

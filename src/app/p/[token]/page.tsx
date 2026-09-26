@@ -31,7 +31,7 @@ export default async function PaginaPainel({ params, searchParams }: { params: P
       <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6">
         {(await searchParams).novo && !espaco.demo ? <LinkNovo token={token} /> : null}
         <Painel
-          espaco={{ token, token_leitura: espaco.token_leitura, nome: espaco.nome, demo: espaco.demo, alerta_dias: espaco.alerta_dias, email: espaco.email }}
+          espaco={{ token, token_leitura: espaco.token_leitura, nome: espaco.nome, demo: espaco.demo, alerta_dias: espaco.alerta_dias }}
           empresas={empresas}
           eventos={lista}
           rotas={rotas}

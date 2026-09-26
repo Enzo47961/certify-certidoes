@@ -8,7 +8,7 @@ const texto = Inter({ subsets: ['latin'], variable: '--fonte-texto', display: 's
 export const metadata: Metadata = {
   title: { default: 'CERTIFY · Certidões em dia', template: '%s · CERTIFY' },
   description:
-    'Informe o CNPJ e acompanhe as certidões fiscais e jurídicas da empresa num só painel: Federal, FGTS, Trabalhista, Estadual, Municipal, Falência e TCU. Alertas de vencimento, e-mail semanal, pasta ZIP e integração.',
+    'Informe o CNPJ e acompanhe as certidões fiscais e jurídicas da empresa num só painel: Federal, FGTS, Trabalhista, Estadual, Municipal, Falência e TCU. Alertas de vencimento, pasta ZIP, link de consulta e integração.',
   applicationName: 'CERTIFY',
 };
 

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Marca } from '@/components/cabecalho';
 import { Comecar } from '@/components/comecar';
-import { IconeEmail, IconeEscudo, IconeLink, IconePasta, IconeRaio, IconeSino, IconeUpload } from '@/components/icones';
+import { IconeEscudo, IconeLink, IconeOlho, IconePasta, IconeRaio, IconeSino, IconeUpload } from '@/components/icones';
 import { CATALOGO } from '@/lib/catalogo';
 
 const AMOSTRA: Array<[string, string, Array<'ok' | 'aviso' | 'perigo' | 'neutro'>]> = [
@@ -36,7 +36,7 @@ export default function Inicio() {
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-petroleo-100">
                 Informe o CNPJ. O CERTIFY reúne Federal, FGTS, Trabalhista, Estadual, Municipal, Falência e a consulta do TCU num painel só, avisa antes de
-                vencer e entrega os PDFs por e-mail, pasta ou integração com o seu sistema.
+                vencer e exporta os PDFs em pasta organizada, link de consulta ou integração com o seu sistema.
               </p>
               <div className="mt-8">
                 <Comecar claro />
@@ -83,7 +83,7 @@ export default function Inicio() {
             {[
               ['1', 'Informe o CNPJ', 'Razão social, UF e município vêm do cadastro público da Receita. O painel já sabe qual SEFAZ, prefeitura e tribunal procurar.'],
               ['2', 'Emita e guarde', 'O que sai automático é emitido na hora. O resto abre no site oficial certo; você envia o PDF e o CERTIFY lê resultado, número e validade.'],
-              ['3', 'Receba antes de vencer', 'Alerta com antecedência, resumo semanal com os PDFs, pasta ZIP organizada e envio para o seu sistema interno.'],
+              ['3', 'Receba antes de vencer', 'O painel destaca o que vence na janela que você escolhe. Os PDFs saem em pasta ZIP, link de consulta ou direto para o seu sistema.'],
             ].map(([n, t, d]) => (
               <li key={n} className="rounded-3xl border border-tinta-200 bg-white p-6 shadow-suave">
                 <span className="font-display text-3xl font-extrabold text-petroleo-500">{n}</span>
@@ -140,10 +140,10 @@ export default function Inicio() {
           <h2 className="font-display text-3xl font-extrabold tracking-tight">Chega onde você precisa</h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
             {[
-              [<IconeEmail key="e" />, 'E-mail semanal', 'Toda segunda às 8h (ou quando você escolher): a situação de cada empresa e os PDFs vigentes em anexo.'],
-              [<IconeSino key="s" />, 'Alerta de vencimento', 'Aviso com a antecedência que você define, e de novo a 7 dias, 1 dia e no vencimento. Cada aviso sai uma vez só.'],
+              [<IconeOlho key="o" />, 'Tudo visível num lugar', 'Cada certidão abre na própria tela, com resultado, número, validade e o histórico de todas as emissões.'],
+              [<IconeSino key="s" />, 'Alerta de vencimento', 'Janela de renovação que você define (5 a 60 dias). Com integração, o seu sistema recebe o aviso todo dia às 8h, a 7 dias, 1 dia e no vencimento.'],
               [<IconePasta key="p" />, 'Pasta pronta e link de consulta', 'ZIP com uma pasta por empresa e arquivos nomeados pela validade, e um link só de download para o contador ou o cliente.'],
-              [<IconeLink key="l" />, 'Integração com seu sistema', 'Cada certidão nova vai por webhook assinado (HMAC) para o sistema jurídico, ERP ou GED, com os dados e o PDF.'],
+              [<IconeLink key="l" />, 'Integração com seu sistema', 'Cada certidão nova e cada aviso de vencimento vão por webhook assinado (HMAC) para o sistema jurídico, ERP ou GED, com os dados e o PDF.'],
             ].map(([icone, t, d], i) => (
               <div key={i} className="flex gap-4 rounded-3xl border border-tinta-200 bg-white p-6 shadow-suave">
                 <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-petroleo-50 text-petroleo-700">{icone}</span>

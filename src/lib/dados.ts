@@ -10,15 +10,10 @@ export type Espaco = {
   nome: string;
   demo: boolean;
   leitura: boolean;
-  email: string | null;
-  rotina_ativa: boolean;
-  rotina_dia: number;
-  rotina_hora: number;
   alerta_ativo: boolean;
   alerta_dias: number;
   webhook_url: string | null;
   webhook_segredo: string;
-  ultimo_envio: string | null;
 };
 
 export type EmpresaComCertidoes = Empresa & { criado_em: string; certidoes: CertidaoResumo[] };

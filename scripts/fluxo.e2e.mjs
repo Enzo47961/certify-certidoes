@@ -37,9 +37,8 @@ const zip = await fetch(`${BASE}/api/p/${T}/pasta`); const zb = new Uint8Array(a
 ok('pasta ZIP', zip.status === 200 && zb[0] === 0x50 && zb[1] === 0x4b, `${zb.length} bytes`);
 const esp = await j(`/p/${T}/configuracoes`); const tl = String(esp.b).length;
 // Configuração
-ok('e-mail inválido recusado', (await post(`/api/p/${T}/config`, { email: 'x@' })).s === 400);
 ok('webhook interno bloqueado', (await post(`/api/p/${T}/config`, { webhook_url: 'https://127.0.0.1/x' })).s === 400);
 ok('webhook http bloqueado', (await post(`/api/p/${T}/config`, { webhook_url: 'http://exemplo.com' })).s === 400);
-const cfg = await post(`/api/p/${T}/config`, { email: 'teste@exemplo.com', rotina_ativa: true, rotina_dia: 1, rotina_hora: 8, alerta_dias: 20, webhook_url: 'https://webhook.site/certify-teste' });
+const cfg = await post(`/api/p/${T}/config`, { alerta_dias: 20, alerta_ativo: true, webhook_url: 'https://webhook.site/certify-teste' });
 ok('configuração salva', cfg.s === 200 && cfg.b.espaco.alerta_dias === 20 && cfg.b.espaco.token === undefined);
 console.log('TOKEN', T);
